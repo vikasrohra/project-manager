@@ -44,6 +44,39 @@ function Autobind(_: any, _1: string, descriptor: PropertyDescriptor) {
     return adjDescriptor;
 }
 
+// ProjectList Class
+class ProjectList {
+    templateElement: HTMLTemplateElement;
+    hostElement: HTMLDivElement;
+    element: HTMLElement;
+
+    // As type is assigned with access modifier it will be created as an instance variable and a value is assigned to it automatically, no need to create and assign it inside the constructor separately
+    constructor(private type: 'active' | 'finished') {
+        this.templateElement = document.getElementById('project-list')! as HTMLTemplateElement;
+        this.hostElement = document.getElementById('app')! as HTMLDivElement;
+
+        const importedNode = document.importNode(this.templateElement.content, true);
+        this.element = importedNode.firstElementChild as HTMLElement;
+        // id would be active-projects or finished-projects
+        this.element.id = `${this.type}-projects`;
+
+        this.attach();
+        this.renderContent();
+    }
+
+    private renderContent() {
+        // Assign id to unordered list that holds list of projects
+        const listId = `${this.type}-projects-list`;
+        this.element.querySelector('ul')!.id = listId;
+        // Assign header to the list based on type
+        this.element.querySelector('h2')!.textContent = this.type.toUpperCase() + ' PROJECTS';
+    }
+
+    private attach() {
+        this.hostElement.insertAdjacentElement('beforeend', this.element);
+    }
+}
+
 // ProjectInput Class
 class ProjectInput {
     templateElement: HTMLTemplateElement;
@@ -134,3 +167,5 @@ class ProjectInput {
 }
 
 const projectInput = new ProjectInput();
+const activePrjList = new ProjectList('active');
+const finishedPrjList = new ProjectList('finished');
