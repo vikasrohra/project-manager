@@ -26,7 +26,7 @@ class ProjectState {
             noOfPeople: noOfPeople
         }
         this.projects.push(project);
-        for(const listenerFn of this.listeners) {
+        for(const listenerFn of this.listeners) {// This will trigger the project list class that somthing is updated in the projects
             listenerFn(this.projects.slice()); // Return the brand new copy of the projects
         }
     }
