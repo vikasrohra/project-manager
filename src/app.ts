@@ -160,7 +160,8 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
 
     @Autobind
     dragStartHandler(event: DragEvent) {
-        console.log(event);
+        event.dataTransfer!.setData('text/plain', this.project.id);
+        event.dataTransfer!.effectAllowed = 'move'; // Cursor will be different based on this
     }
 
     // If we don't want to use the parameter then we can add _ and if we have multiple such paramereter then we do somthing like this, _, _1, _2 and so on...., because TS will throw an error that these params are not used hence _ is required to tell the TS that we don't want to use them
@@ -190,18 +191,21 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
 
     @Autobind
     dragOverHandler(event: DragEvent) {
-        const listEL = this.element.querySelector('ul');
-        listEL?.classList.add('droppable');
+        if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
+            event.preventDefault();
+            const listEL = this.element.querySelector('ul')!;
+            listEL.classList.add('droppable');
+        }        
     }
 
     dropHandler(event: DragEvent) {
-        
+        console.log(event.dataTransfer!.getData('text/plain'));
     }
 
     @Autobind
     dragLeaveHandler(event: DragEvent) {
-        const listEL = this.element.querySelector('ul');
-        listEL?.classList.remove('droppable');
+        const listEL = this.element.querySelector('ul')!;
+        listEL.classList.remove('droppable');
     }
 
     configure() {
