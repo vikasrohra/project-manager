@@ -176,7 +176,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
 }
 
 // ProjectList Class
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList extends Component<HTMLDivElement, HTMLElement> implements DragTarget {
     assignedProjects: Project[];
 
     // As type is assigned with access modifier it will be created as an instance variable and a value is assigned to it automatically, no need to create and assign it inside the constructor separately
@@ -188,7 +188,27 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
         this.renderContent();
     }
 
+    @Autobind
+    dragOverHandler(event: DragEvent) {
+        const listEL = this.element.querySelector('ul');
+        listEL?.classList.add('droppable');
+    }
+
+    dropHandler(event: DragEvent) {
+        
+    }
+
+    @Autobind
+    dragLeaveHandler(event: DragEvent) {
+        const listEL = this.element.querySelector('ul');
+        listEL?.classList.remove('droppable');
+    }
+
     configure() {
+        this.element.addEventListener('dragover', this.dragOverHandler);
+        this.element.addEventListener('drop', this.dropHandler);
+        this.element.addEventListener('dragleave', this.dragLeaveHandler);
+
         projectState.addListener((projects: Project[]) => {
             const releventProjects = projects.filter(prj => {
                 if(this.type === 'active') {
