@@ -1,3 +1,15 @@
+// Drag & Drop Interfaces
+interface Draggable {
+    dragStartHandler(event: DragEvent): void;
+    dragEndHandler(event: DragEvent): void;
+}
+
+interface DragTarget {
+    dragOverHandler(event: DragEvent): void;
+    dropHandler(event: DragEvent): void;
+    dragLeaveHandler(event: DragEvent): void;
+}
+
 // Project Type
 enum ProjectStatus {
     Active,
@@ -122,7 +134,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 }
 
 // ProjectItem Class
-class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements Draggable {
     private project: Project;
 
     get persons() {
@@ -142,7 +154,18 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
     }
 
     configure() {
-        
+        this.element.addEventListener('dragstart', this.dragStartHandler);
+        this.element.addEventListener('dragend', this.dragEndHandler);
+    }
+
+    @Autobind
+    dragStartHandler(event: DragEvent) {
+        console.log(event);
+    }
+
+    // If we don't want to use the parameter then we can add _ and if we have multiple such paramereter then we do somthing like this, _, _1, _2 and so on...., because TS will throw an error that these params are not used hence _ is required to tell the TS that we don't want to use them
+    dragEndHandler(_: DragEvent) {
+        console.log("Dragend");
     }
 
     renderContent() {
