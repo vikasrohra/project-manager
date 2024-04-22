@@ -1,10 +1,10 @@
-import { Component } from "./base-component.js";
-import { validate, Validatable } from "../util/validation.js";
-import { Autobind } from "../decorators/autobind.js";
+import Cmp from "./base-component.js"; // OR import Component from "./base-component.js";
+import * as Validation from "../util/validation.js";
+import { Autobind as autobind } from "../decorators/autobind.js";
 import { projectState } from "../state/project-state.js";
 
 // ProjectInput Class
-export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   peopleInputElement: HTMLInputElement;
@@ -36,18 +36,18 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeople = this.peopleInputElement.value;
 
-    const titleValadatable: Validatable = {
+    const titleValadatable: Validation.Validatable = {
       value: enteredTitle,
       required: true,
     };
 
-    const descriptionValadatable: Validatable = {
+    const descriptionValadatable: Validation.Validatable = {
       value: enteredDescription,
       required: true,
       minLength: 5,
     };
 
-    const perpleValadatable: Validatable = {
+    const perpleValadatable: Validation.Validatable = {
       value: enteredPeople,
       required: true,
       min: 1,
@@ -55,9 +55,9 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     };
 
     if (
-      !validate(titleValadatable) ||
-      !validate(descriptionValadatable) ||
-      !validate(perpleValadatable)
+      !Validation.validate(titleValadatable) ||
+      !Validation.validate(descriptionValadatable) ||
+      !Validation.validate(perpleValadatable)
     ) {
       alert("Invalid input, please try again!");
       return;
@@ -72,7 +72,7 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.peopleInputElement.value = "";
   }
 
-  @Autobind
+  @autobind
   private submitHandler(event: Event) {
     event.preventDefault();
     const userInput = this.gatherUserInput();

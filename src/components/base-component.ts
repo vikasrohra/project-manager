@@ -1,7 +1,7 @@
 // Component Base Class
 // Here the type of host and element is not fixed hence, we use generics to allow sub classes to decide the type, we know the template type
 // abstract, because we don't want to allow people to instantiate this class rather inherit it
-export abstract class Component<T extends HTMLElement, U extends HTMLElement> {
+export default abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   templateElement: HTMLTemplateElement;
   hostElement: T;
   element: U;
