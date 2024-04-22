@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "lite-server": "^2.6.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
@@ -15,7 +16,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack --config webpack.config.prod.js"
   },
   "repository": {
     "type": "git",
